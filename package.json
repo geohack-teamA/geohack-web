@@ -6,17 +6,19 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --ignore-path .gitignore \"src/**/*.+(ts|js|tsx)\""
+    "format": "eslint --fix --ext '.js,.jsx,.ts,.tsx' ."
   },
   "dependencies": {
     "@chakra-ui/react": "^1.8.3",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@line/liff": "^2.18.1",
+    "formik": "^2.2.9",
     "framer-motion": "^6.2.6",
     "next": "12.0.10",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/node": "17.0.17",
