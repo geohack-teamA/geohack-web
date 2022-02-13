@@ -1,13 +1,10 @@
-
-import { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from './Home.module.css'
-import useLine from "@geohack/repository/liff"
+import Head from 'next/head';
+import Image from 'next/image';
+import styles from './Home.module.css';
 
 const Home = () => {
-  const {getLanguage, isLoggedIn, logout, login} = useLine();
-return (
+  // const { getLanguage, isLoggedIn, logout, login } = useLine();
+  return (
     <div className={styles.container}>
       <Head>
         <title>Create Next App</title>
@@ -17,9 +14,13 @@ return (
 
       <main className={styles.main}>
         You
-        <div>{isLoggedIn()}</div>
-        <button type='button' onClick={() => login()}>Login</button>
-        <button type='button' onClick={() => logout()}>Logout</button>
+        {/* <div>{isLoggedIn()}</div>
+        <button type="button" onClick={() => login()}>
+          Login
+        </button>
+        <button type="button" onClick={() => logout()}>
+          Logout
+        </button> */}
       </main>
 
       <footer className={styles.footer}>
@@ -28,14 +29,14 @@ return (
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{` `}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
