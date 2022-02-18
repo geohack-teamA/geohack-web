@@ -39,10 +39,26 @@ const Form: React.FC<Props> = ({ className }) => {
     enoughStock: Yup.bool().required(`required`),
   });
   const handleSubmit = useCallback(
-    (values: FormValue, helpers: FormikHelpers<FormValue>) => {
-      setTimeout(() => {
-        console.log(`submit----`, values);
-      }, 1000);
+    async (values: FormValue, helpers: FormikHelpers<FormValue>) => {
+      if (!currentLocation) {
+        alert(`location must be turned on`);
+        return;
+      }
+      const reqObj = {
+        lat: currentLocation?.lat,
+        lng: currentLocation?.lng,
+        currentLevel: values.floorLevel,
+        hasDifficultFamily: values.disabilityOnFamily,
+        hasEnoughStock: values.enoughStock,
+      };
+      const res = await fetch(`http://localhost:8000/analyze`, {
+        method: `POST`,
+        headers: {
+          'Content-Type': `application/json`,
+        },
+        body: JSON.stringify(reqObj),
+      });
+      const result = res.json();
     },
     [],
   );
@@ -84,7 +100,7 @@ const Form: React.FC<Props> = ({ className }) => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {(props) => (
+        {({ values, errors, handleChange, handleSubmit, isSubmitting }) => (
           <FormikForm>
             <Swiper
               ref={ref}
@@ -127,6 +143,8 @@ const Form: React.FC<Props> = ({ className }) => {
                       </FormLabel>
                       <Checkbox
                         defaultChecked={field.checked}
+                        checked={field.checked}
+                        onChange={field.onChange}
                         id="disabilityOnFamily"
                       />
                       <FormErrorMessage>{form.errors}</FormErrorMessage>
@@ -149,6 +167,8 @@ const Form: React.FC<Props> = ({ className }) => {
                       </FormLabel>
                       <Checkbox
                         defaultChecked={field.checked}
+                        checked={field.checked}
+                        onChange={field.onChange}
                         id="enoughStock"
                       />
                       <FormErrorMessage>{form.errors}</FormErrorMessage>

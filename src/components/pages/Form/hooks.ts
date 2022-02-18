@@ -35,6 +35,14 @@ export default () => {
     return;
   };
 
+  useEffect(() => {
+    console.log(locationErr);
+  }, [locationErr]);
+
+  useEffect(() => {
+    console.log(`loc-----`, currentLocation);
+  }, [currentLocation]);
+
   return {
     getGeoLocation,
     currentLocation,
