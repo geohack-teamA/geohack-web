@@ -5,6 +5,7 @@ export type Props = {
   icon: keyof typeof Icons;
   m?: number;
   p?: number;
+  onClick?: () => void;
 };
 
 const Icons = {
@@ -12,9 +13,9 @@ const Icons = {
   arrowLeft: ArrowLeftIcon,
 };
 
-const Icon: React.FC<Props> = ({ className, icon, m, p }) => {
+const Icon: React.FC<Props> = ({ className, icon, m, p, onClick }) => {
   const IconComp = Icons[icon];
-  return <IconComp m={m} p={p} />;
+  return <IconComp m={m} p={p} onClick={onClick} />;
 };
 
 export default Icon;

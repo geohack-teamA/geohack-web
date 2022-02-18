@@ -2,21 +2,23 @@ import {
   Box,
   Button,
   Checkbox,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
+  Text,
 } from '@chakra-ui/react';
 import { Field, Formik, FormikHelpers, Form as FormikForm } from 'formik';
 import type { FieldInputProps, FormikProps } from 'formik';
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import useHooks from './hooks';
 import * as Yup from 'yup';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { SwiperSlide } from 'swiper/react';
+import Swiper from 'react-id-swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import { Navigation, Pagination } from 'swiper';
 import Icon from '@geohack/components/ui/Icon';
 
 export type Props = {
@@ -44,6 +46,33 @@ const Form: React.FC<Props> = ({ className }) => {
     },
     [],
   );
+  const [slideIndex, setSlideIndex] = useState(1);
+
+  const ref = useRef(null);
+  const updateSlideIndex = () => {
+    if (!ref.current) return;
+    const index: number = (ref.current as any).swiper.activeIndex ?? 0;
+    setSlideIndex(index + 1);
+  };
+
+  const handleNextSlide = () => {
+    if (!ref.current) return;
+    (ref.current as any).swiper.slideNext();
+    updateSlideIndex();
+  };
+
+  const handlePrevSlide = () => {
+    if (!ref.current) return;
+    (ref.current as any).swiper.slidePrev();
+    updateSlideIndex();
+  };
+
+  const totalSlides = () => {
+    if (!ref.current) return;
+    const slides: any[] = (ref.current as any).swiper.slides;
+    return slides.length ?? 0;
+  };
+
   return (
     <Box>
       <Formik<FormValue>
@@ -58,13 +87,14 @@ const Form: React.FC<Props> = ({ className }) => {
         {(props) => (
           <FormikForm>
             <Swiper
-              pagination={{ type: `progressbar` }}
+              ref={ref}
+              pagination={{
+                type: `progressbar`,
+                el: `.swiper-pagination`,
+                clickable: true,
+              }}
               slidesPerView={1}
-              onSlideChange={() => console.log(`slide change`)}
-              onSwiper={(swiper) => console.log(swiper)}
-              modules={[Pagination, Navigation]}
             >
-              <Icon icon="arrowLeft" m={10} />
               <SwiperSlide>
                 <Field name="floorLevel">
                   {({
@@ -127,8 +157,12 @@ const Form: React.FC<Props> = ({ className }) => {
                 </Field>
                 <Button type="submit">送信</Button>
               </SwiperSlide>
-              <Icon icon="arrowRight" m={10} />
             </Swiper>
+            <Flex justify="center">
+              <Icon icon="arrowLeft" m={20} onClick={handlePrevSlide} />
+              <Text>{`${slideIndex}/${totalSlides()}`}</Text>
+              <Icon icon="arrowRight" m={20} onClick={handleNextSlide} />
+            </Flex>
           </FormikForm>
         )}
       </Formik>
