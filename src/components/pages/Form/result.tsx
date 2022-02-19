@@ -75,6 +75,7 @@ const Result: React.FC<Props> = ({ className, data }) => {
           </>
         )}
       </Flex>
+      <a href="https://geohack-teama.github.io/sample_map/">避難経路はこちら</a>
     </Box>
   );
 };
