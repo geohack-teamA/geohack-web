@@ -181,7 +181,7 @@ const Form: React.FC<Props> = ({}) => {
                     >
                       <Box m={5}>
                         <Text align="center">
-                          安全な場所に住んでいて、身を寄せられる親戚・知人はしますか？
+                          安全な場所に住んでいて、身を寄せられる親戚・知人はいますか？
                         </Text>
                       </Box>
                       <Field name="hasSafeRelative">

@@ -40,7 +40,7 @@ const Result: React.FC<Props> = ({ className, data }) => {
                 <Thead>
                   <Tr>
                     <Th>ID</Th>
-                    <Th>地上浸水域</Th>
+                    <Th>地上階数</Th>
                     <Th>建物高</Th>
                     <Th>浸水深</Th>
                     <Th>深さランク</Th>
