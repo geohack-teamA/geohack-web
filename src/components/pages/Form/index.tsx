@@ -7,11 +7,6 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Text,
 } from '@chakra-ui/react';
 import { Field, Formik, Form as FormikForm } from 'formik';
@@ -24,13 +19,12 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import Icon from '@geohack/components/ui/Icon';
-import Radio from './Items/radio';
 
 export type Props = {
   className?: string;
 };
 
-const Form: React.FC<Props> = ({ className }) => {
+const Form: React.FC<Props> = ({}) => {
   const {
     handleGeoLocationGet,
     handleNextSlide,
@@ -107,20 +101,6 @@ const Form: React.FC<Props> = ({ className }) => {
                             type="number"
                             max={100}
                           />
-                          {/* <NumberInput
-                            id="floorLevel"
-                            placeholder="1"
-                            min={-5}
-                            onChange={field.onChange}
-                            value={field.value}
-                            max={100}
-                          >
-                            <NumberInputField {...field} />
-                            <NumberInputStepper>
-                              <NumberIncrementStepper />
-                              <NumberDecrementStepper />
-                              </NumberInputStepper>
-                            </NumberInput> */}
                           <FormErrorMessage>{form.errors}</FormErrorMessage>
                         </FormControl>
                       )}
@@ -153,11 +133,9 @@ const Form: React.FC<Props> = ({ className }) => {
                         }) => (
                           <FormControl>
                             <Flex alignItems="center" justifyContent="center">
-                              {/* <FormLabel htmlFor="disabilityOnFamily"> */}
                               <Box m={2}>
                                 <Text align="center">はい</Text>
                               </Box>
-                              {/* </FormLabel> */}
                               <Checkbox
                                 defaultChecked={field.checked}
                                 checked={field.checked}
@@ -165,11 +143,6 @@ const Form: React.FC<Props> = ({ className }) => {
                                 id="disabilityOnFamily"
                               />
                             </Flex>
-                            {/* <Radio
-                              name="disabilityOnFamily"
-                              options={[`checked`, `unchecked`]}
-                              onChange={(e) => console.log(e)}
-                            /> */}
                             <FormErrorMessage>{form.errors}</FormErrorMessage>
                           </FormControl>
                         )}
@@ -195,7 +168,6 @@ const Form: React.FC<Props> = ({ className }) => {
                         }) => (
                           <FormControl>
                             <Flex alignItems="center" justifyContent="center">
-                              {/* <FormLabel htmlFor="hasSafeRelative"> */}
                               <Box m={2}>
                                 <Text align="center">はい</Text>
                               </Box>
@@ -207,11 +179,6 @@ const Form: React.FC<Props> = ({ className }) => {
                                 id="hasSafeRelative"
                               />
                             </Flex>
-                            {/* <Radio
-                              name="hasSafeRelative"
-                              options={[`checked`, `unchecked`]}
-                              onChange={(e) => console.log(e)}
-                            /> */}
                             <FormErrorMessage>{form.errors}</FormErrorMessage>
                           </FormControl>
                         )}
@@ -240,7 +207,6 @@ const Form: React.FC<Props> = ({ className }) => {
                           form: FormikProps<FormValue['enoughStock']>;
                         }) => (
                           <FormControl>
-                            {/* <FormLabel htmlFor="enoughStock"></FormLabel> */}
                             <Flex alignItems="center" justifyContent="center">
                               <Box m={2}>
                                 <Text align="center">はい</Text>
