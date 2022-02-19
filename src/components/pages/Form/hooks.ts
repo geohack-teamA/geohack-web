@@ -102,6 +102,7 @@ export default () => {
           headers: {
             'Content-Type': `application/json`,
           },
+          mode: `cors`,
           body: JSON.stringify(reqObj),
         });
         const result: Promise<ResponseData> = res.json();
