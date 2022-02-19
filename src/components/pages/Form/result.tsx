@@ -28,31 +28,31 @@ const Result: React.FC<Props> = ({ className, data }) => {
             : `自宅で待機してください。`}
         </Text>
         <Text>{data?.message}</Text>
-        {/* {data?.userBuilding && ( */}
-        <>
-          <Text>ユーザー建物情報</Text>
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>ID</Th>
-                <Th>地上浸水域</Th>
-                <Th>建物高</Th>
-                <Th>浸水深</Th>
-                <Th>深さランク</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td>{data?.userBuilding?.id}</Td>
-                <Td>{data?.userBuilding?.storeysAboveGround}</Td>
-                <Td>{data?.userBuilding?.height}</Td>
-                <Td>{data?.userBuilding?.depth}</Td>
-                <Td>{data?.userBuilding?.depthRank}</Td>
-              </Tr>
-            </Tbody>
-          </Table>
-        </>
-        {/* )} */}
+        {data?.userBuilding && (
+          <>
+            <Text>ユーザー建物情報</Text>
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>ID</Th>
+                  <Th>地上浸水域</Th>
+                  <Th>建物高</Th>
+                  <Th>浸水深</Th>
+                  <Th>深さランク</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr>
+                  <Td>{data?.userBuilding?.id}</Td>
+                  <Td>{data?.userBuilding?.storeysAboveGround}</Td>
+                  <Td>{data?.userBuilding?.height}</Td>
+                  <Td>{data?.userBuilding?.depth}</Td>
+                  <Td>{data?.userBuilding?.depthRank}</Td>
+                </Tr>
+              </Tbody>
+            </Table>
+          </>
+        )}
         {data?.nearestShelter && (
           <>
             <Text>最寄り避難所情報</Text>

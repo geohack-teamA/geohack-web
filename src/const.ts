@@ -1,1 +1,1 @@
-export const END_POINT = `https://geohack-api-v43uibs7tq-an.a.run.app`;
+export const END_POINT = process.env.NEXT_PUBLIC_ENDPOINT;

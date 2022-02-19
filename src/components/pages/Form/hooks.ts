@@ -97,7 +97,6 @@ export default () => {
         hasEnoughStock: values.enoughStock,
       };
       try {
-        // const res = await fetch(`http://localhost:8000/analyze`, {
         const res = await fetch(`${END_POINT}/analyze`, {
           method: `POST`,
           headers: {
