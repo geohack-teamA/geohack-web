@@ -42,7 +42,7 @@ export default () => {
   const [locationErr, setLocationErr] = useState<string>();
   const [resData, setResData] = useState<ResponseData>();
   const [isGettingLocation, setIsGettingLocation] = useState(false);
-  // const [mode, setMode] = useState<'form' | 'result'>(`result`);
+  const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState<'form' | 'result'>(`form`);
   useEffect(() => {
     if (!isGeoLocationActive) return;
@@ -88,6 +88,7 @@ export default () => {
         alert(`位置情報がない場合判定結果を取得することができません。`);
         return;
       }
+      setLoading(true);
       const reqObj = {
         lat: currentLocation?.lat,
         lng: currentLocation?.lng,
@@ -110,9 +111,11 @@ export default () => {
         setMode(`result`);
       } catch (e) {
         console.error(`ERR: fail to send request`);
+      } finally {
+        setLoading(false);
       }
     },
-    [currentLocation, setResData, setMode],
+    [currentLocation, setResData, setMode, setLoading],
   );
 
   const [slideIndex, setSlideIndex] = useState<number>(1);
@@ -155,5 +158,6 @@ export default () => {
     mode,
     resData,
     isGettingLocation,
+    loading,
   };
 };

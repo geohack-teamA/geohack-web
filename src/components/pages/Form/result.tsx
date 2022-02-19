@@ -22,37 +22,43 @@ const Result: React.FC<Props> = ({ className, data }) => {
     <Box m={10}>
       <Flex direction="column" align="center">
         <Text>判定結果</Text>
-        <Text>
-          {data?.shouldEvacuate
-            ? `今すぐ避難が必要です。`
-            : `自宅で待機してください。`}
-        </Text>
-        <Text>{data?.message}</Text>
-        {data?.userBuilding && (
-          <>
-            <Text>ユーザー建物情報</Text>
-            <Table variant="simple">
-              <Thead>
-                <Tr>
-                  <Th>ID</Th>
-                  <Th>地上浸水域</Th>
-                  <Th>建物高</Th>
-                  <Th>浸水深</Th>
-                  <Th>深さランク</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                <Tr>
-                  <Td>{data?.userBuilding?.id}</Td>
-                  <Td>{data?.userBuilding?.storeysAboveGround}</Td>
-                  <Td>{data?.userBuilding?.height}</Td>
-                  <Td>{data?.userBuilding?.depth}</Td>
-                  <Td>{data?.userBuilding?.depthRank}</Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </>
-        )}
+        <Box mt={10}>
+          <Text>
+            {data?.shouldEvacuate
+              ? `今すぐ避難が必要です。`
+              : `自宅で待機してください。`}
+          </Text>
+        </Box>
+        <Box mt={10}>
+          <Text>{data?.message}</Text>
+        </Box>
+        <Box mt={10}>
+          {data?.userBuilding && (
+            <>
+              <Text>ユーザー建物情報</Text>
+              <Table variant="simple">
+                <Thead>
+                  <Tr>
+                    <Th>ID</Th>
+                    <Th>地上浸水域</Th>
+                    <Th>建物高</Th>
+                    <Th>浸水深</Th>
+                    <Th>深さランク</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  <Tr>
+                    <Td>{data?.userBuilding?.id}</Td>
+                    <Td>{data?.userBuilding?.storeysAboveGround}</Td>
+                    <Td>{data?.userBuilding?.height}</Td>
+                    <Td>{data?.userBuilding?.depth}</Td>
+                    <Td>{data?.userBuilding?.depthRank}</Td>
+                  </Tr>
+                </Tbody>
+              </Table>
+            </>
+          )}
+        </Box>
         {data?.nearestShelter && (
           <>
             <Text>最寄り避難所情報</Text>
@@ -75,7 +81,13 @@ const Result: React.FC<Props> = ({ className, data }) => {
           </>
         )}
       </Flex>
-      <a href="https://geohack-teama.github.io/sample_map/">避難経路はこちら</a>
+      <Box mt={10}>
+        <Flex justifyContent="center">
+          <a href="https://geohack-teama.github.io/sample_map/">
+            避難経路はこちら
+          </a>
+        </Flex>
+      </Box>
     </Box>
   );
 };

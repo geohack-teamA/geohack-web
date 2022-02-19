@@ -40,6 +40,7 @@ const Form: React.FC<Props> = ({}) => {
     isGettingLocation,
     mode,
     resData,
+    loading,
   } = useHooks();
 
   return mode === `form` ? (
@@ -212,46 +213,52 @@ const Form: React.FC<Props> = ({}) => {
                   </Box>
                 </SwiperSlide>
                 <SwiperSlide>
-                  <Box m={20}>
-                    <Flex
-                      flexDirection="column"
-                      justifyContent="center"
-                      alignItems="center"
-                    >
-                      <Box m={5}>
-                        <Text align="center">
-                          最後に、備蓄の確認をしましょう。浸水しても水が引くまで待てるほど、水・食料の蓄えがありますか？
-                        </Text>
-                      </Box>
-                      <Field name="enoughStock">
-                        {({
-                          field,
-                          form,
-                        }: {
-                          field: FieldInputProps<FormValue['enoughStock']>;
-                          form: FormikProps<FormValue['enoughStock']>;
-                        }) => (
-                          <FormControl>
-                            <Flex alignItems="center" justifyContent="center">
-                              <Box m={2}>
-                                <Text align="center">はい</Text>
-                              </Box>
-                              <Checkbox
-                                defaultChecked={field.checked}
-                                checked={field.checked}
-                                onChange={field.onChange}
-                                id="enoughStock"
-                              />
-                            </Flex>
-                            <FormErrorMessage>{form.errors}</FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
-                      <Box m={4}>
-                        <Button type="submit">送信</Button>
-                      </Box>
-                    </Flex>
-                  </Box>
+                  {loading ? (
+                    <Box m={30}>
+                      <Spinner />
+                    </Box>
+                  ) : (
+                    <Box m={20}>
+                      <Flex
+                        flexDirection="column"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <Box m={5}>
+                          <Text align="center">
+                            最後に、備蓄の確認をしましょう。浸水しても水が引くまで待てるほど、水・食料の蓄えがありますか？
+                          </Text>
+                        </Box>
+                        <Field name="enoughStock">
+                          {({
+                            field,
+                            form,
+                          }: {
+                            field: FieldInputProps<FormValue['enoughStock']>;
+                            form: FormikProps<FormValue['enoughStock']>;
+                          }) => (
+                            <FormControl>
+                              <Flex alignItems="center" justifyContent="center">
+                                <Box m={2}>
+                                  <Text align="center">はい</Text>
+                                </Box>
+                                <Checkbox
+                                  defaultChecked={field.checked}
+                                  checked={field.checked}
+                                  onChange={field.onChange}
+                                  id="enoughStock"
+                                />
+                              </Flex>
+                              <FormErrorMessage>{form.errors}</FormErrorMessage>
+                            </FormControl>
+                          )}
+                        </Field>
+                        <Box m={4}>
+                          <Button type="submit">送信</Button>
+                        </Box>
+                      </Flex>
+                    </Box>
+                  )}
                 </SwiperSlide>
               </Swiper>
             </Box>
