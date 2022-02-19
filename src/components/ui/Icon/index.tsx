@@ -1,5 +1,5 @@
 import { ArrowRightIcon, ArrowLeftIcon } from '@chakra-ui/icons';
-
+import { GrLocation } from 'react-icons/gr';
 export type Props = {
   className?: string;
   icon: keyof typeof Icons;
@@ -11,6 +11,7 @@ export type Props = {
 const Icons = {
   arrowRight: ArrowRightIcon,
   arrowLeft: ArrowLeftIcon,
+  location: GrLocation,
 };
 
 const Icon: React.FC<Props> = ({ className, icon, m, p, onClick }) => {
