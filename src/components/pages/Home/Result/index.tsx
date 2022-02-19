@@ -10,7 +10,7 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import React from 'react';
-import { ResponseData } from './hooks';
+import { ResponseData } from '../hooks';
 
 export type Props = {
   className?: string;

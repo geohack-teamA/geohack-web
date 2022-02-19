@@ -13,37 +13,40 @@ import {
 import { Field, Formik, Form as FormikForm } from 'formik';
 import type { FieldInputProps, FormikProps } from 'formik';
 import React from 'react';
-import useHooks, { FormValue } from './hooks';
 import { SwiperSlide } from 'swiper/react';
 import Swiper from 'react-id-swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import Icon from '@geohack/components/ui/Icon';
-import Result from './result';
+import useHooks, { FormValue } from './hooks';
+import { Position } from '../hooks';
 
 export type Props = {
   className?: string;
+  onGeoLocationGet?: () => void;
+  currentLocation?: Position;
+  onSubmit?: (values: FormValue) => void;
+  loading?: boolean;
 };
 
-const Form: React.FC<Props> = ({}) => {
+const Form: React.FC<Props> = ({
+  onGeoLocationGet,
+  currentLocation,
+  onSubmit,
+  loading,
+}) => {
   const {
-    handleGeoLocationGet,
+    handleSubmit,
     handleNextSlide,
     handlePrevSlide,
-    handleSubmit,
-    currentLocation,
     slideIndex,
     slideRef,
     totalSlides,
     validationSchema,
-    isGettingLocation,
-    mode,
-    resData,
-    loading,
-  } = useHooks();
+  } = useHooks({ onSubmit });
 
-  return mode === `form` ? (
+  return (
     <Box>
       <Formik<FormValue>
         initialValues={{
@@ -78,7 +81,7 @@ const Form: React.FC<Props> = ({}) => {
                       <Button
                         leftIcon={<Icon icon="location" />}
                         type="button"
-                        onClick={handleGeoLocationGet}
+                        onClick={onGeoLocationGet}
                       >
                         現在地を取得
                       </Button>
@@ -91,7 +94,7 @@ const Form: React.FC<Props> = ({}) => {
                           </Flex>
                         </Box>
                       )}
-                      {isGettingLocation && (
+                      {loading && (
                         <Box m={10}>
                           <Flex direction="column" align="center">
                             <Box mb={10}>
@@ -287,8 +290,6 @@ const Form: React.FC<Props> = ({}) => {
         )}
       </Formik>
     </Box>
-  ) : (
-    <Result data={resData} />
   );
 };
 

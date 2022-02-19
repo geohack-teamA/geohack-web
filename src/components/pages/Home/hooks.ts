@@ -1,8 +1,6 @@
 import { END_POINT } from '@geohack/const';
-import { FormikHelpers } from 'formik';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import * as Yup from 'yup';
-
+import { useCallback, useEffect, useState } from 'react';
+import { FormValue } from './Form/hooks';
 export type ResponseData = {
   shouldEvacuate: boolean;
   message: string;
@@ -29,13 +27,6 @@ export type Position = {
   lng: number;
 };
 
-export type FormValue = {
-  floorLevel: number;
-  disabilityOnFamily: boolean;
-  hasSafeRelative: boolean;
-  enoughStock: boolean;
-};
-
 export default () => {
   const [isGeoLocationActive, activateGeoLocation] = useState(false);
   const [currentLocation, setCurrentLocation] = useState<Position>();
@@ -60,30 +51,22 @@ export default () => {
   }, [isGeoLocationActive]);
 
   const handleGeoLocationGet = useCallback(() => {
+    console.log(`click`);
     activateGeoLocation(true);
     setIsGettingLocation(true);
-  }, [activateGeoLocation]);
+  }, [activateGeoLocation, setIsGettingLocation]);
 
   useEffect(() => {
     if (!isGeoLocationActive || !currentLocation) return;
     setIsGettingLocation(false);
   }, [setIsGettingLocation, isGeoLocationActive, currentLocation]);
-  useEffect(() => {
-    console.log(locationErr);
-  }, [locationErr]);
 
   useEffect(() => {
-    console.log(`loc-----`, currentLocation);
+    console.log(currentLocation);
   }, [currentLocation]);
 
-  const validationSchema = Yup.object({
-    floorLevel: Yup.number().required(`Required`),
-    disabilityOnFamily: Yup.bool().required(`requireed`),
-    enoughStock: Yup.bool().required(`required`),
-  });
-
   const handleSubmit = useCallback(
-    async (values: FormValue, helpers: FormikHelpers<FormValue>) => {
+    async (values: FormValue) => {
       if (!currentLocation) {
         alert(`位置情報がない場合判定結果を取得することができません。`);
         return;
@@ -103,7 +86,6 @@ export default () => {
           headers: {
             'Content-Type': `application/json`,
           },
-          mode: `cors`,
           body: JSON.stringify(reqObj),
         });
         const result: Promise<ResponseData> = res.json();
@@ -118,46 +100,12 @@ export default () => {
     [currentLocation, setResData, setMode, setLoading],
   );
 
-  const [slideIndex, setSlideIndex] = useState<number>(1);
-
-  const slideRef = useRef(null);
-  const updateSlideIndex = () => {
-    if (!slideRef.current) return;
-    const index: number = (slideRef.current as any).swiper.activeIndex ?? 0;
-    setSlideIndex(index + 1);
-  };
-
-  const handleNextSlide = () => {
-    if (!slideRef.current) return;
-    (slideRef.current as any).swiper.slideNext();
-    updateSlideIndex();
-  };
-
-  const handlePrevSlide = () => {
-    if (!slideRef.current) return;
-    (slideRef.current as any).swiper.slidePrev();
-    updateSlideIndex();
-  };
-
-  const totalSlides = () => {
-    if (!slideRef.current) return;
-    const slides: any[] = (slideRef.current as any).swiper.slides;
-    return slides.length ?? 0;
-  };
-
   return {
     handleGeoLocationGet,
     currentLocation,
     handleSubmit,
-    handleNextSlide,
-    handlePrevSlide,
-    totalSlides,
-    slideIndex,
-    slideRef,
-    validationSchema,
     mode,
     resData,
-    isGettingLocation,
-    loading,
+    loading: loading || isGettingLocation,
   };
 };
