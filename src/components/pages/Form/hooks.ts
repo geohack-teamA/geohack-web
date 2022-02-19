@@ -1,6 +1,28 @@
+import { END_POINT } from '@geohack/const';
 import { FormikHelpers } from 'formik';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as Yup from 'yup';
+
+export type ResponseData = {
+  shouldEvacuate: boolean;
+  message: string;
+  nearestShelter: Shelter;
+  userBuilding?: Building;
+};
+
+type Shelter = {
+  name?: string;
+  lat?: string;
+  lng?: string;
+};
+
+type Building = {
+  id: string;
+  storeysAboveGround: number;
+  height: number;
+  depth: number;
+  depthRank: number;
+};
 
 export type Position = {
   lat: number;
@@ -18,6 +40,10 @@ export default () => {
   const [isGeoLocationActive, activateGeoLocation] = useState(false);
   const [currentLocation, setCurrentLocation] = useState<Position>();
   const [locationErr, setLocationErr] = useState<string>();
+  const [resData, setResData] = useState<ResponseData>();
+  const [isGettingLocation, setIsGettingLocation] = useState(false);
+  // const [mode, setMode] = useState<'form' | 'result'>(`result`);
+  const [mode, setMode] = useState<'form' | 'result'>(`form`);
   useEffect(() => {
     if (!isGeoLocationActive) return;
     navigator.geolocation.getCurrentPosition(
@@ -35,20 +61,13 @@ export default () => {
 
   const handleGeoLocationGet = useCallback(() => {
     activateGeoLocation(true);
-  }, []);
-  const getGeoLocation = (): Position | undefined => {
-    navigator.geolocation.getCurrentPosition(
-      (pos: GeolocationPosition) => {
-        return { lat: pos.coords.latitude, lng: pos.coords.longitude };
-      },
-      (posErr: GeolocationPositionError) => {
-        console.log(`ERR:`, posErr.message);
-        return undefined;
-      },
-    );
-    return;
-  };
+    setIsGettingLocation(true);
+  }, [activateGeoLocation]);
 
+  useEffect(() => {
+    if (!isGeoLocationActive || !currentLocation) return;
+    setIsGettingLocation(false);
+  }, [setIsGettingLocation, isGeoLocationActive, currentLocation]);
   useEffect(() => {
     console.log(locationErr);
   }, [locationErr]);
@@ -66,29 +85,37 @@ export default () => {
   const handleSubmit = useCallback(
     async (values: FormValue, helpers: FormikHelpers<FormValue>) => {
       if (!currentLocation) {
-        alert(`location must be turned on`);
+        alert(`位置情報がない場合判定結果を取得することができません。`);
         return;
       }
       const reqObj = {
         lat: currentLocation?.lat,
         lng: currentLocation?.lng,
         currentLevel: values.floorLevel,
+        hasSafeRelative: values.hasSafeRelative,
         hasDifficultFamily: values.disabilityOnFamily,
         hasEnoughStock: values.enoughStock,
       };
-      const res = await fetch(`http://localhost:8000/analyze`, {
-        method: `POST`,
-        headers: {
-          'Content-Type': `application/json`,
-        },
-        body: JSON.stringify(reqObj),
-      });
-      const result = res.json();
+      try {
+        // const res = await fetch(`http://localhost:8000/analyze`, {
+        const res = await fetch(`${END_POINT}/analyze`, {
+          method: `POST`,
+          headers: {
+            'Content-Type': `application/json`,
+          },
+          body: JSON.stringify(reqObj),
+        });
+        const result: Promise<ResponseData> = res.json();
+        setResData(await result);
+        setMode(`result`);
+      } catch (e) {
+        console.error(`ERR: fail to send request`);
+      }
     },
-    [],
+    [currentLocation, setResData, setMode],
   );
 
-  const [slideIndex, setSlideIndex] = useState(1);
+  const [slideIndex, setSlideIndex] = useState<number>(1);
 
   const slideRef = useRef(null);
   const updateSlideIndex = () => {
@@ -117,7 +144,6 @@ export default () => {
 
   return {
     handleGeoLocationGet,
-    getGeoLocation,
     currentLocation,
     handleSubmit,
     handleNextSlide,
@@ -126,5 +152,8 @@ export default () => {
     slideIndex,
     slideRef,
     validationSchema,
+    mode,
+    resData,
+    isGettingLocation,
   };
 };

@@ -7,6 +7,7 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  Spinner,
   Text,
 } from '@chakra-ui/react';
 import { Field, Formik, Form as FormikForm } from 'formik';
@@ -19,6 +20,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import Icon from '@geohack/components/ui/Icon';
+import Result from './result';
 
 export type Props = {
   className?: string;
@@ -30,13 +32,17 @@ const Form: React.FC<Props> = ({}) => {
     handleNextSlide,
     handlePrevSlide,
     handleSubmit,
+    currentLocation,
     slideIndex,
     slideRef,
     totalSlides,
     validationSchema,
+    isGettingLocation,
+    mode,
+    resData,
   } = useHooks();
 
-  return (
+  return mode === `form` ? (
     <Box>
       <Formik<FormValue>
         initialValues={{
@@ -75,6 +81,25 @@ const Form: React.FC<Props> = ({}) => {
                       >
                         現在地を取得
                       </Button>
+                      {currentLocation && (
+                        <Box m={5}>
+                          <Flex direction="column" justify="center">
+                            <Text>現在地の取得に成功しました</Text>
+                            <Text>緯度{currentLocation.lat}</Text>
+                            <Text>軽度{currentLocation.lng}</Text>
+                          </Flex>
+                        </Box>
+                      )}
+                      {isGettingLocation && (
+                        <Box m={10}>
+                          <Flex direction="column" align="center">
+                            <Box mb={10}>
+                              <Spinner />
+                            </Box>
+                            <Text>現在地を取得中です</Text>
+                          </Flex>
+                        </Box>
+                      )}
                     </Flex>
                   </Box>
                 </SwiperSlide>
@@ -255,6 +280,8 @@ const Form: React.FC<Props> = ({}) => {
         )}
       </Formik>
     </Box>
+  ) : (
+    <Result data={resData} />
   );
 };
 
